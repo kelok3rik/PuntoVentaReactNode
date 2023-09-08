@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const conexion = require('./DATABASE/db.js');
+// Enrutadores
+const routesEmployer = require('./routes/routesEmployer');
+const routesUser = require('./routes/routesUser');
+
+// Rutas
+router.use('/employer', routesEmployer);
+router.use('/user', routesUser);
 
 
-
-//ruta para mostrar basico
+// Ruta principal
 router.get('/', (req, res) => {
+  res.send('Ruta principal');
+});
 
-    res.send('cabra a tiguere');
-
-})
-
-
+ 
 module.exports = router;
