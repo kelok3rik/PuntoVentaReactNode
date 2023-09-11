@@ -1,19 +1,19 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import { pool } from '../DATABASE/db.js';
+import { getUsers,
+        getUserById,
+        createUser,
+        updateUser,
+        deleteUser } from '../controllers/controllerUser.js';
 
-const conexion = require('../DATABASE/db.js');
+const router = Router(); // Crea una instancia de Router
+
+router.get('/users', getUsers);
+router.get('/users/:id', getUserById);
+router.post('/users', createUser);
+router.put('/users/:id', updateUser);
+router.delete('/users/:id', deleteUser);
 
 
-router.get('/', async (req, res) => {
-    const result = await conexion.query('SELECT * FROM usuarios', (error, filas) => {
-        if (error) {
-            throw error;
-        } else {
-            res.send(filas);
-            console.log(filas);
-        }
-    })
-})
 
-
-module.exports = router;
+export default router;

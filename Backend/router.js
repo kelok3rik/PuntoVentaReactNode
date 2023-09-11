@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // Enrutadores
-const routesEmployer = require('./routes/routesEmployer');
-const routesUser = require('./routes/routesUser');
+import routesEmployer from './routes/routesEmployer.js';
+import routesUser from './routes/routesUser.js';
+
 
 // Rutas
 router.use('/employer', routesEmployer);
@@ -16,4 +17,4 @@ router.get('/', (req, res) => {
 });
 
  
-module.exports = router;
+export default router;

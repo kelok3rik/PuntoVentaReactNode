@@ -1,19 +1,9 @@
-const mysql = require('mysql');
+import { createPool } from "mysql2/promise"
 
-const conexion = mysql.createConnection({
+export const pool = new createPool({
     host: 'localhost',
+    port: 3306,
     user: 'root',
     password: 'ERIKmama21',
     database: '3pos3'
-
 })
-
-conexion.connect((error)=>{
-    if(error){
-        console.error('El error de la conexion es: '+error);
-        return
-    }
-    console.log("Conectado a la BD!");
-})
-
-module.exports = conexion;

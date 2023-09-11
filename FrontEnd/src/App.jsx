@@ -1,11 +1,11 @@
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
-import ShowCountries from './components/showCountries.jsx';
+import ShowUsuarios from './components/ShowUsuarios.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ShowCountries />} />
+        <Route path="/" element={<ShowUsuarios />} />
       </Routes>
     </BrowserRouter>
   );
