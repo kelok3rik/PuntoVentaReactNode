@@ -13,7 +13,9 @@ router.use('/user', routesUser);
 
 // Ruta principal
 router.get('/', (req, res) => {
-  res.send('Ruta principal');
+  res.send('Ruta principals');
+  
+  
 });
 
  
