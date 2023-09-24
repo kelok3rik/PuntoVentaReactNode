@@ -50,15 +50,6 @@ export const updateUser = async (req, res) => {
 
         const { id, NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
 
-        // const id = req.body.id;
-        // const NombreUsuario = req.body.nombreUsuario;
-        // const Contraseña = req.body.Contraseña;
-        // const NombreCompleto = req.body.NombreCompleto;
-        // const Rol = req.body.Rol;
-
-        //
-        //const { NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
-
         console.log('Datos del usuario a actualizar:');
         console.log("ID: "+id);
         console.log("Nombre usuario: "+NombreUsuario);
