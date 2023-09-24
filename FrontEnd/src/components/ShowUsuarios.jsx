@@ -84,7 +84,7 @@ const showUsuarios = () => {
         parametros = { NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
         metodo = 'POST';
       } else if (operation === 2) {
-        parametros = { id: id, nombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
+        parametros = { id: id, NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
         metodo = 'PUT';
       }
       

@@ -47,21 +47,25 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         // Extraer el ID del usuario y los nuevos datos del cuerpo de la solicitud
-        const { id } = req.params;
-        const NombreUsuario = req.body.NombreUsuario;
-        const Contraseña = req.body.Contraseña;
-        const NombreCompleto = req.body.NombreCompleto;
-        const Rol = req.body.Rol;
+
+        const { id, NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
+
+        // const id = req.body.id;
+        // const NombreUsuario = req.body.nombreUsuario;
+        // const Contraseña = req.body.Contraseña;
+        // const NombreCompleto = req.body.NombreCompleto;
+        // const Rol = req.body.Rol;
 
         //
         //const { NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
 
         console.log('Datos del usuario a actualizar:');
-        
-        console.log(id);
-       
+        console.log("ID: "+id);
+        console.log("Nombre usuario: "+NombreUsuario);
+        console.log("Password: "+Contraseña);
+        console.log("Nombre completo: "+NombreCompleto);
+        console.log("Rol: "+Rol);
         console.log(req.body);
-
         console.log('--------------------------');
        
 
