@@ -1,11 +1,13 @@
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import ShowUsuarios from './components/ShowUsuarios.jsx';
+import NavBar from './components/NavBar.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ShowUsuarios />} />
+        <Route path="/" element={
+        <ShowUsuarios />} />
       </Routes>
     </BrowserRouter>
   );

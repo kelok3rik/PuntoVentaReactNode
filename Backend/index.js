@@ -1,6 +1,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 import userRoutes from './routes/routesUser.js';
 import indexRoutes from './routes/routesIndex.js';
@@ -15,6 +16,9 @@ const corsOptions = {
 const app = express();
 app.use(cors(corsOptions));
 
+
+// Configurar body-parser para analizar JSON
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
