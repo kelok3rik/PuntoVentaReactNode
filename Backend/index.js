@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 
 import userRoutes from './routes/routesUser.js';
 import indexRoutes from './routes/routesIndex.js';
+import productsRoutes from './routes/routesProducts.js';
 
 // import {employerRoutes} from './routes/routesEmployer.js';
 
@@ -25,6 +26,7 @@ app.use(express.json());
 // Asignacion de rutas a la aplicacion
 app.use(userRoutes);
 app.use(indexRoutes);
+app.use(productsRoutes);
 
 // Inicializacion del servidor
 app.listen(5000, () => {

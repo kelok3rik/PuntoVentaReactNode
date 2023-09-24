@@ -8,26 +8,19 @@ export const getUsers = async (req, res) => {
     return res.json(setJson);
 }
 
-// Conseguir un usuario por su id
-export const getUserById = async (req, res) => {
-
-    const usuarioID = req.params.id;
-
-    const [results] = await pool.query('CALL LeerUsuarioPorID(?)', [usuarioID]);
-    const setJson = results[0];
-    return res.json(setJson);
-
-}
-
 // Crear un usuario
 export const createUser = async (req, res) => {
     try {
         // Extraer los datos del nuevo usuario del cuerpo de la solicitud
         const { NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
+
+        if (!NombreUsuario || !Contraseña || !NombreCompleto || !Rol) {
+          return res.status(400).json(['error', 'Todos los campos son obligatorios']);
+        }
     
         // Realizar la consulta SQL para insertar el nuevo usuario en la base de datos
         const result = await pool.query(
-          'INSERT INTO usuarios (NombreUsuario, Contraseña, NombreCompleto, Rol) VALUES (?, ?, ?, ?)',
+          'CALL InsertarUsuario(?, ?, ?, ?)',
           [NombreUsuario, Contraseña, NombreCompleto, Rol]
         );
          
@@ -50,6 +43,10 @@ export const updateUser = async (req, res) => {
 
         const { id, NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
 
+        if (!id || !NombreUsuario || !Contraseña || !NombreCompleto || !Rol) {
+          return res.status(400).json(['error', 'Todos los campos son obligatorios']);
+        }
+
         console.log('Datos del usuario a actualizar:');
         console.log("ID: "+id);
         console.log("Nombre usuario: "+NombreUsuario);
@@ -59,12 +56,10 @@ export const updateUser = async (req, res) => {
         console.log(req.body);
         console.log('--------------------------');
        
-
-    
         // Realizar la consulta SQL para actualizar el usuario
         const result = await pool.query(
-          'UPDATE usuarios SET NombreUsuario = ?, Contraseña = ?, NombreCompleto = ?, Rol = ? WHERE UsuarioID = ?',
-          [NombreUsuario, Contraseña, NombreCompleto, Rol, id]
+          'CALL ActualizarUsuario(?, ?, ?, ?, ?)',
+          [id,NombreUsuario, Contraseña, NombreCompleto, Rol]
         );
     
         // Verificar si se actualizó correctamente
@@ -84,7 +79,7 @@ export const deleteUser = async (req, res) => {
     res.send('Eliminando usuario');
 }
 
-// Usario por ID 
+
 
 
 
