@@ -1,17 +1,22 @@
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import ShowUsuarios from './components/ShowUsuarios.jsx';
+import ShowProductos from './components/showProductos.jsx';
 import NavBar from './components/NavBar.jsx';
 import showLobby from './components/showLobby.jsx';
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={
-        <showLobby />} />
+          <showLobby />} />
 
         <Route path="/showUsuarios" element={
-        <ShowUsuarios />} />
+          <ShowUsuarios />} />
+
+        <Route path="/showProductos" element={
+          <ShowProductos />} />
       </Routes>
     </BrowserRouter>
   );

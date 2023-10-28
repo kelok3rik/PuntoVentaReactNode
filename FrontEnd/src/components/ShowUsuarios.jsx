@@ -16,7 +16,7 @@ const showUsuarios = () => {
   const [Contraseña, setContraseña] = useState('');
   const [NombreCompleto, setNombreCompleto] = useState('');
   const [Rol, setRol] = useState('');
-  const [operation,setOperation]= useState(1);
+  const [operation, setOperation] = useState(1);
   const [title, setTitle] = useState('');
 
 
@@ -87,15 +87,15 @@ const showUsuarios = () => {
         parametros = { id: id, NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
         metodo = 'PUT';
       }
-      
+
       enviarSolicitud(parametros, metodo);
 
     }
   }
 
-  
 
-  const enviarSolicitud = async (parametros, metodo) => { 
+
+  const enviarSolicitud = async (parametros, metodo) => {
     await axios({ method: metodo, url: 'http://localhost:5000/users', data: parametros }).then((response) => {
       var tipo = response.data[0];
       var msj = response.data[1];
@@ -112,12 +112,12 @@ const showUsuarios = () => {
       showAlerta('Error en la solicitud', 'error');
       console.log(error);
     });
-}
+  }
 
   return (
     <div className='App'>
       <div className='row mt-3'>
-        <div className='col-md-4 offset-4'>
+        <div className='col-sm-6 offset-sm-3 col-md-4 offset-md-4'>
           <div className='d-grid mx-auto'>
             <button onClick={() => openModal(1)} className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalCountries'>
               <i className='fa-solid fa-circle-plus'></i> Agregar
@@ -125,6 +125,9 @@ const showUsuarios = () => {
           </div>
         </div>
       </div>
+
+
+
       <div className="container-fluid p-5 ">
 
         <div className="col-md-12 shadow-lg p-2 mb-5 bg-light rounded ">
@@ -188,10 +191,15 @@ const showUsuarios = () => {
               </div>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
-                <input type="text" id="Rol" className="form-control" placeholder="Rol" value={Rol} onChange={(e) => setRol(e.target.value)}></input>
+                <select id="Rol" className="form-select" value={Rol} onChange={(e) => setRol(e.target.value)}>
+                  <option value="">Selecciona un rol</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Cajero">Cajero</option>
+                </select>
               </div>
+
               <div className='d-grid col-6 mx-auto'>
-                <button onClick={()=> validar()} className='btn btn-success'>
+                <button onClick={() => validar()} className='btn btn-success'>
                   <i className='fa-solid fa-save'></i> Guardar
                 </button>
               </div>

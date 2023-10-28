@@ -29,11 +29,14 @@ const NavBar = () => {
                                 <li><a className="dropdown-item" href="/mantenimientoCategoria">Categoría</a></li>
                                 <li><a className="dropdown-item" href="/mantenimientoEmpleado">Empleado</a></li>
                                 <li><a className="dropdown-item" href="/showUsuarios">Usuarios</a></li>
-                                <li><a className="dropdown-item" href="/">Productos</a></li>
+                                <li><a className="dropdown-item" href="/showProductos">Productos</a></li>
                             </ul>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/ordenar">Ordenar</a>
+                            <a className="nav-link" href="/ordenar">Ventas</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/ordenar">Inventario</a>
                         </li>
                     </ul>
                     <ul className="navbar-nav">

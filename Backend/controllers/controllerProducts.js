@@ -17,6 +17,8 @@ export const createProduct = async (req, res) => {
     try {
         const { Nombre, Descripcion, Precio, CantidadStock, Reorden, CategoriaID, ProveedorID } = req.body;
 
+        console.log(req.body);
+        
         if (!Nombre || !Descripcion || !Precio || !CantidadStock || !Reorden || !CategoriaID || !ProveedorID) {
             return res.status(400).json(['error', 'Todos los campos son obligatorios']);
         }
