@@ -18,7 +18,7 @@ export const createProduct = async (req, res) => {
         const { Nombre, Descripcion, Precio, CantidadStock, Reorden, CategoriaID, ProveedorID } = req.body;
 
         console.log(req.body);
-        
+
         if (!Nombre || !Descripcion || !Precio || !CantidadStock || !Reorden || !CategoriaID || !ProveedorID) {
             return res.status(400).json(['error', 'Todos los campos son obligatorios']);
         }
@@ -44,6 +44,8 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { ProductoID, Nombre, Descripcion, Precio, CantidadStock, Reorden, CategoriaID, ProveedorID } = req.body;
+
+        console.log(req.body);
 
         if (!ProductoID || !Nombre || !Descripcion || !Precio || !CantidadStock || !Reorden || !CategoriaID || !ProveedorID) {
             return res.status(400).json(['error', 'Todos los campos son obligatorios']);

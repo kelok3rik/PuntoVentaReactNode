@@ -121,15 +121,24 @@ const showProductos = () => {
   const validar = () => {
     var parametros;
     var metodo;
+
+    console.log("DEBUUUUG");
+   
+    console.log("CantidadStock");
+    console.log(CantidadStock);
+    
+   
+
+    
     if (ProductoNombre.trim() === '') {
       showAlerta('El nombre del producto es obligatorio', 'error');
     } else if (Descripcion.trim() === '') {
       showAlerta('La descripción del producto es obligatoria', 'error');
-    } else if (Precio.trim() === '') {
+    } else if (Precio.toString().trim() === '') {
       showAlerta('El precio del producto es obligatorio', 'error');
-    } else if (CantidadStock.trim() === '') {
+    } else if (CantidadStock.toString().trim() === '') {
       showAlerta('La cantidad en stock es obligatoria', 'error');
-    } else if (Reorden.trim() === '') {
+    } else if (Reorden.toString().trim() === '') {
       showAlerta('La cantidad de reorden es obligatoria', 'error');
     } else if (Categoria.trim() === '') {
       showAlerta('La categoría es obligatoria', 'error');
@@ -141,25 +150,25 @@ const showProductos = () => {
           
           Nombre: ProductoNombre.trim(),
           Descripcion: Descripcion.trim(),
-          Precio: Precio.trim(),
-          CantidadStock: CantidadStock.trim(),
-          Reorden: Reorden.trim(),
-          CategoriaID: idCategoria.trim(),
-          ProveedorID: idProveedor.trim()
+          Precio: Precio.toString().trim(),
+          CantidadStock: CantidadStock.toString().trim(),
+          Reorden: Reorden.toString().trim(),
+          CategoriaID: idCategoria.toString().trim(),
+          ProveedorID: idProveedor.toString().trim()
          
         };
         metodo = 'POST';
         enviarSolicitud(parametros, metodo);
       } else if (operation === 2) {
         parametros = {
-          id: id,
+          ProductoID: id,
           Nombre: ProductoNombre.trim(),
           Descripcion: Descripcion.trim(),
-          Precio: Precio.trim(),
-          CantidadStock: CantidadStock.trim(),
-          Reorden: Reorden.trim(),
-          CategoriaID: idCategoria.trim(),
-          ProveedorID: idProveedor.trim()
+          Precio: Precio.toString().trim(),
+          CantidadStock: CantidadStock.toString().trim(),
+          Reorden: Reorden.toString().trim(),
+          CategoriaID: idCategoria.toString().trim(),
+          ProveedorID: idProveedor.toString().trim()
 
         };
         metodo = 'PUT';
