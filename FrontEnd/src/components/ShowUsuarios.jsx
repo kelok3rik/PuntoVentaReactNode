@@ -246,15 +246,15 @@ const showUsuarios = () => {
           <input type='hidden' id='id'></input>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
-            <TextField id="nombreUsuario" label="Nombre Usuario"  value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} sx={{ width: '90%' }} />
+            <TextField id="nombreUsuario" label="Nombre Usuario" value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} sx={{ width: '90%' }} />
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-lock'></i></span>
-            <TextField id="Contraseña" label="Contraseña"  value={Contraseña} onChange={(e) => setContraseña(e.target.value)} sx={{ width: '90%' }} />
+            <TextField id="Contraseña" label="Contraseña" value={Contraseña} onChange={(e) => setContraseña(e.target.value)} sx={{ width: '90%' }} />
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
-            <TextField id="NombreCompleto" label="Nombre Completo"  value={NombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)} sx={{ width: '90%' }} />
+            <TextField id="NombreCompleto" label="Nombre Completo" value={NombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)} sx={{ width: '90%' }} />
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
@@ -262,8 +262,8 @@ const showUsuarios = () => {
               disablePortal
               id="combo-box-demo"
               options={optionsUsers}
-              value={Rol}
-              onChange={(event, newValue) => setRol(newValue.value)}
+              value={optionsUsers.find((option) => option.value === Rol) || null}
+              onChange={(event, newValue) => setRol(newValue ? newValue.value : '')}
               renderInput={(params) => <TextField {...params} label="Selecciona un rol" sx={{ width: '367%' }} />}
             />
           </div>

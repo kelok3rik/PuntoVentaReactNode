@@ -128,7 +128,7 @@ const showProductos = () => {
   }
 
   const validar = () => {
-  
+
 
     if (ProductoNombre.trim() === '') {
       showAlerta('El nombre del producto es obligatorio', 'error');
