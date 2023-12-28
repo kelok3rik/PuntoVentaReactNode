@@ -16,7 +16,7 @@ export const getProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
     try {
         const { Nombre, Descripcion, Precio, CantidadStock, Reorden, CategoriaID, ProveedorID } = req.body;
-
+        console.log('Datos del producto a crear:');
         console.log(req.body);
 
         if (!Nombre || !Descripcion || !Precio || !CantidadStock || !Reorden || !CategoriaID || !ProveedorID) {

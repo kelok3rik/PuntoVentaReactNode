@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { createClient } from "@supabase/supabase-js";
+import MUIDataTable from "mui-datatables";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { showAlerta } from '../functions';
 
-
-
-// const supabase = createClient("https://vncppionwaebafkldsxm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY3BwaW9ud2FlYmFma2xkc3htIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTMyNTIwODEsImV4cCI6MjAwODgyODA4MX0.w0rqb0Dq6fMe7tZC1rfU_YRyjpo8Dy8ly2npuN5Vt4g");
-
 const showUsuarios = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const [usuarios, setUsuarios] = useState([]);
   const [id, setId] = useState('');
   const [nombreUsuario, setNombreUsuario] = useState('');
@@ -19,13 +20,24 @@ const showUsuarios = () => {
   const [operation, setOperation] = useState(1);
   const [title, setTitle] = useState('');
 
+  const optionsUsers = [
+    { value: 'Administrador', label: 'Administrador' },
+    { value: 'Cajero', label: 'Cajero' },
+  ]
+
+
+
+  const handleDelete = (rowData) => {
+    // Lógica para manejar la acción de "Eliminar"
+    console.log("Eliminar usuario:", rowData);
+  };
+
 
 
   useEffect(() => {
-    //getCountries();
+
     getUsers();
   }, []);
-
 
   async function getUsers() {
     fetch('http://localhost:5000/users')
@@ -45,12 +57,14 @@ const showUsuarios = () => {
     setNombreCompleto('');
     setRol('');
     setId('');
-
     if (op === 1) {
+      setShowModal(true);
       setTitle('Registrar usuario');
       setOperation(1);
     }
     else if (op === 2) {
+      console.log("Datos que llegan para Editar usuario:", id, nombreUsuario, Contraseña, NombreCompleto, Rol);
+      setShowModal(true);
       setTitle('Editar usuario');
       setOperation(2);
       setId(id);
@@ -76,15 +90,15 @@ const showUsuarios = () => {
     else if (NombreCompleto.trim() === '') {
       showAlerta('El nombre completo es obligatorio', 'error');
     }
-    else if (Rol.trim() === '') {
+    else if (Rol.toString().trim() === '') {
       showAlerta('El rol es obligatorio', 'error');
     }
     else {
       if (operation === 1) {
-        parametros = { NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
+        parametros = { NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.toString().trim() };
         metodo = 'POST';
       } else if (operation === 2) {
-        parametros = { id: id, NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.trim() };
+        parametros = { id: id, NombreUsuario: nombreUsuario.trim(), Contraseña: Contraseña.trim(), NombreCompleto: NombreCompleto.trim(), Rol: Rol.toString().trim() };
         metodo = 'PUT';
       }
 
@@ -92,8 +106,6 @@ const showUsuarios = () => {
 
     }
   }
-
-
 
   const enviarSolicitud = async (parametros, metodo) => {
     await axios({ method: metodo, url: 'http://localhost:5000/users', data: parametros }).then((response) => {
@@ -114,103 +126,167 @@ const showUsuarios = () => {
     });
   }
 
+
+  //EL MUI DATATABLE LOGIC ABRE
+
+  const columns = [
+
+    { name: "IDUsuario", label: "IDUsuario", options: { display: 'excluded', filter: false } },
+    { name: "NombreUsuario", label: "Usuario", filter: true },
+    { name: "Contraseña", label: "Contraseña", filter: true },
+    { name: "NombreCompleto", label: "Nombre", filter: true },
+    { name: "Rol", label: "Rol" },
+    {
+      name: "Acciones",
+      label: "Acciones",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return (
+            <div>
+              <button onClick={() => openModal(2, usuarios[tableMeta.rowIndex].UsuarioID, usuarios[tableMeta.rowIndex].NombreUsuario, usuarios[tableMeta.rowIndex].Contraseña, usuarios[tableMeta.rowIndex].NombreCompleto, usuarios[tableMeta.rowIndex].Rol)} className='btn btn-warning'>
+                <i className='fa-solid fa-edit'></i>
+              </button>
+              <button onClick={() => handleDelete(usuarios[tableMeta.rowIndex])} className='btn btn-danger'>
+                <i className='fa-solid fa-trash'></i>
+              </button>
+            </div>
+          );
+        },
+      },
+    },
+  ];
+
+  const options = {
+    selectableRows: "none",
+    download: false,
+    print: false,
+    filter: true,
+    viewColumns: false,
+    divider: true,
+    responsive: "standard",
+    rowsPerPage: 3,
+    rowsPerPageOptions: [3, 6, 9],
+
+    textLabels: {
+      body: {
+        noMatch: "No se encontraron registros",
+        toolTip: "Ordenar",
+      },
+      pagination: {
+        next: "Siguiente",
+        previous: "Anterior",
+        rowsPerPage: "Filas por página:",
+        displayRows: "de",
+      },
+      toolbar: {
+        search: "Buscar",
+        downloadCsv: "Descargar CSV",
+        print: "Imprimir",
+        viewColumns: "Ver columnas",
+        filterTable: "Filtrar tabla",
+      },
+      filter: {
+        all: "Todos",
+        title: "Filtros",
+        reset: "Resetear",
+      },
+      viewColumns: {
+        title: "Mostrar columnas",
+        titleAria: "Mostrar/ocultar columnas",
+      },
+      selectedRows: {
+        text: "fila(s) seleccionada(s)",
+        delete: "Eliminar",
+        deleteAria: "Eliminar filas seleccionadas",
+      },
+    },
+  };
+
+
+  //EL MUI DATATABLE LOGIC CIERRA
+
   return (
     <div className='App'>
-      <div className='row mt-3'>
-        <div className='col-sm-6 offset-sm-3 col-md-4 offset-md-4'>
-          <div className='d-grid mx-auto'>
-            <button onClick={() => openModal(1)} className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalCountries'>
-              <i className='fa-solid fa-circle-plus'></i> Agregar
-            </button>
-          </div>
+
+      <div className='col-sm-6 offset-sm-3 col-md-4 offset-md-4'>
+        <div className='d-grid mx-auto'>
+          <button onClick={() => openModal(1)} className='btn btn-dark' >
+            <i className='fa-solid fa-circle-plus'></i> Agregar
+          </button>
         </div>
       </div>
 
 
 
-      <div className="container-fluid p-5 ">
+
+      <div className="container-fluid-8">
 
         <div className="col-md-12 shadow-lg p-2 mb-5 bg-light rounded ">
-          <div className='table-responsive'>
-            <table className='table table-bordered'>
-              <thead>
-                <tr><th>Usuario</th><th>Contraseña</th><th>Nombre</th><th>Rol</th><th>Acciones</th></tr>
-              </thead>
 
-              <tbody className='table-group-divisor'>
-                {usuarios.map((usuario, index) => (
-                  <tr key={usuario.UsuarioID}>
+          <MUIDataTable
+            title={"Lista de usuarios"}
+            data={usuarios}
+            columns={columns}
+            options={options}
+          />
 
-                    <td>{usuario.NombreUsuario}</td>
-                    <td>{usuario.Contraseña}</td>
-                    <td>{usuario.NombreCompleto}</td>
-                    <td>{usuario.Rol}</td>
-                    <td>
-                      <button onClick={() => openModal(2, usuario.UsuarioID, usuario.NombreUsuario, usuario.Contraseña, usuario.NombreCompleto, usuario.Rol)} className='btn btn-warning' data-bs-toggle='modal' data-bs-target="#modalCountries">
-                        <i className='fa-solid fa-edit'></i>
-                      </button>
-                      <button className='btn btn-danger'>
-                        <i className='fa-solid fa-trash'></i>
-                      </button>
-                    </td>
-
-                  </tr>
-                ))}
-
-              </tbody>
-            </table>
-          </div>
         </div>
+
       </div>
 
 
 
 
 
-
-      <div id='modalCountries' className='modal fade' aria-hidden='true'>
-        <div className='modal-dialog'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <label className='h5'>{title}</label>
-              <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-            </div>
-            <div className='modal-body'>
-              <input type='hidden' id='id'></input>
-              <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-address-card'></i></span>
-                <input type="text" id="nombreUsuario" className="form-control" placeholder="Nombre Usuario" value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)}></input>
-              </div>
-              <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-lock'></i></span>
-                <input type="text" id="Contraseña" className="form-control" placeholder="Contraseña" value={Contraseña} onChange={(e) => setContraseña(e.target.value)}></input>
-              </div>
-              <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-signature'></i></span>
-                <input type="text" id="NombreCompleto" className="form-control" placeholder="Nombre completo" value={NombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)}></input>
-              </div>
-              <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
-                <select id="Rol" className="form-select" value={Rol} onChange={(e) => setRol(e.target.value)}>
-                  <option value="">Selecciona un rol</option>
-                  <option value="Administrador">Administrador</option>
-                  <option value="Cajero">Cajero</option>
-                </select>
-              </div>
-
-              <div className='d-grid col-6 mx-auto'>
-                <button onClick={() => validar()} className='btn btn-success'>
-                  <i className='fa-solid fa-save'></i> Guardar
-                </button>
-              </div>
-            </div>
-            <div className='modal-footer'>
-              <button id='btnCerrar' type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
-            </div>
-
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input type='hidden' id='id'></input>
+          <div className='input-group mb-3'>
+            <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
+            <TextField id="nombreUsuario" label="Nombre Usuario"  value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} sx={{ width: '90%' }} />
           </div>
-        </div>
-      </div>
+          <div className='input-group mb-3'>
+            <span className='input-group-text'><i className='fa-solid fa-lock'></i></span>
+            <TextField id="Contraseña" label="Contraseña"  value={Contraseña} onChange={(e) => setContraseña(e.target.value)} sx={{ width: '90%' }} />
+          </div>
+          <div className='input-group mb-3'>
+            <span className='input-group-text'><i className='fa-solid fa-user'></i></span>
+            <TextField id="NombreCompleto" label="Nombre Completo"  value={NombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)} sx={{ width: '90%' }} />
+          </div>
+          <div className='input-group mb-3'>
+            <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={optionsUsers}
+              value={Rol}
+              onChange={(event, newValue) => setRol(newValue.value)}
+              renderInput={(params) => <TextField {...params} label="Selecciona un rol" sx={{ width: '367%' }} />}
+            />
+          </div>
+          <div className='d-grid col-6 mx-auto'>
+            <button onClick={() => validar()} className='btn btn-success'>
+              <i className='fa-solid fa-save'></i> Guardar
+            </button>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button id='btnCerrar' type='button' className='btn btn-secondary' data-bs-dismiss='modal' onClick={() => setShowModal(false)}>
+            Cerrar
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
+
+
+
 
 
     </div>

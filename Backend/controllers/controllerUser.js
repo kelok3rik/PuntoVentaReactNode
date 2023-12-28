@@ -11,6 +11,9 @@ export const getUsers = async (req, res) => {
 // Crear un usuario
 export const createUser = async (req, res) => {
     try {
+
+        console.log('Datos del usuario a crear:');
+        console.log(req.body);
         // Extraer los datos del nuevo usuario del cuerpo de la solicitud
         const { NombreUsuario, Contraseña, NombreCompleto, Rol } = req.body;
 
