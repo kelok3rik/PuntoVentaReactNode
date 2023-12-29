@@ -45,7 +45,7 @@ const showProductos = () => {
       .then((response) => response.json())
       .then((data) => {
         setProductos(data);
-        console.log("Data total");
+        console.log("Data total de productos: ");
         console.log(data);
 
         // Crear un objeto para almacenar categorías únicas
@@ -72,8 +72,9 @@ const showProductos = () => {
           ProveedorNombre: nombre
         }));
 
-        console.log("Array Filtrado categoria y proveedor");
+        console.log("Array Filtrado categoria: ");
         console.log(categoriasArray);
+        console.log("Array Filtrado proveedor: ");
         console.log(proveedoresArray);
         setCategoriasArray(categoriasArray);
         setProveedoresArray(proveedoresArray);
@@ -105,7 +106,7 @@ const showProductos = () => {
       setOperation(1);
     }
     else if (op === 2) {
-      console.log("Datos que llegan para Editar producto:", id, ProductoNombre, Descripcion, Precio, CantidadStock, Reorden, Categoria, Proveedor);
+      console.log("Datos que llegan para Editar producto:", id, ProductoNombre, Descripcion, Precio, CantidadStock, Reorden, Categoria, Proveedor, idCategoria, idProveedor);
       setShowModal(true);
       setTitle('Editar producto');
       setOperation(2);
@@ -128,7 +129,8 @@ const showProductos = () => {
   }
 
   const validar = () => {
-
+    var parametros;
+    var metodo;
 
     if (ProductoNombre.trim() === '') {
       showAlerta('El nombre del producto es obligatorio', 'error');
@@ -202,7 +204,7 @@ const showProductos = () => {
 
   const columns = [
 
-    { name: "IDProducto", label: "IDProducto", options: { display: 'excluded', filter: false } },
+    { name: "ProductoID", label: "ProductoID", options: { display: 'excluded', filter: false } },
     { name: "ProductoNombre", label: "Nombre", filter: true },
     { name: "Descripcion", label: "Descripcion", filter: true },
     { name: "Precio", label: "Precio", filter: true },
@@ -210,6 +212,8 @@ const showProductos = () => {
     { name: "Reorden", label: "Reorden", filter: true },
     { name: "CategoriaNombre", label: "Categoria", filter: true },
     { name: "ProveedorNombre", label: "Proveedor", filter: true },
+    { name: "CategoriaID", label: "CategoriaID", options: { display: 'excluded', filter: false } },
+    { name: "ProveedorID", label: "ProveedorID", options: { display: 'excluded', filter: false } },
     {
       name: "Acciones",
       label: "Acciones",
@@ -217,7 +221,7 @@ const showProductos = () => {
         customBodyRender: (value, tableMeta) => {
           return (
             <div>
-              <button onClick={() => openModal(2, productos[tableMeta.rowIndex].IDProducto, productos[tableMeta.rowIndex].ProductoNombre, productos[tableMeta.rowIndex].Descripcion, productos[tableMeta.rowIndex].Precio, productos[tableMeta.rowIndex].CantidadStock, productos[tableMeta.rowIndex].Reorden, productos[tableMeta.rowIndex].Categoria, productos[tableMeta.rowIndex].Proveedor)} className='btn btn-warning'>
+              <button onClick={() => openModal(2, productos[tableMeta.rowIndex].ProductoID, productos[tableMeta.rowIndex].ProductoNombre, productos[tableMeta.rowIndex].Descripcion, productos[tableMeta.rowIndex].Precio, productos[tableMeta.rowIndex].CantidadStock, productos[tableMeta.rowIndex].Reorden, productos[tableMeta.rowIndex].CategoriaNombre, productos[tableMeta.rowIndex].ProveedorNombre, productos[tableMeta.rowIndex].CategoriaID, productos[tableMeta.rowIndex].ProveedorID)} className='btn btn-warning'>
                 <i className='fa-solid fa-edit'></i>
               </button>
               <button onClick={() => handleDelete(productos[tableMeta.rowIndex])} className='btn btn-danger'>
@@ -343,18 +347,21 @@ const showProductos = () => {
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-address-card'></i></span>
-            <TextField id="Reorden" label="Cantidad de reorden" type="number" InputLabelProps={{ shrink: true, }} value={Reorden} onChange={(e) => setReorden(e.target.value)} sx={{ width: '90%' }} />
+            <TextField id="Reorden" label="Cantidad de reorden" type="number" InputLabelProps={{ shrink: true, }} value={Reorden} onChange={(e) => setReorden("e.target.value")} sx={{ width: '90%' }} />
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
             <Autocomplete
+              disablePortal
               id="Categoria"
               options={categoriasArray}
               getOptionLabel={(option) => option.CategoriaNombre}
               value={categoriasArray.find((categoria) => categoria.CategoriaID === Categoria) || null}
               onChange={(event, newValue) => {
                 setCategoria(newValue ? newValue.CategoriaID : '');
+                console.log("Nuevo valor seleccionado:", newValue);
                 setIdCategoria(newValue ? newValue.CategoriaID : '');
+               
               }}
               renderInput={(params) => <TextField {...params} label="Selecciona una categoría" sx={{ width: '480%' }} />}
             />
@@ -363,6 +370,7 @@ const showProductos = () => {
           <div className='input-group mb-3'>
             <span className='input-group-text'><i className='fa-solid fa-users'></i></span>
             <Autocomplete
+              disablePortal
               id="Proveedor"
               options={proveedoresArray}
               getOptionLabel={(option) => option.ProveedorNombre}

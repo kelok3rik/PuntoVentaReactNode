@@ -265,6 +265,7 @@ const showUsuarios = () => {
               value={optionsUsers.find((option) => option.value === Rol) || null}
               onChange={(event, newValue) => setRol(newValue ? newValue.value : '')}
               renderInput={(params) => <TextField {...params} label="Selecciona un rol" sx={{ width: '367%' }} />}
+
             />
           </div>
           <div className='d-grid col-6 mx-auto'>
